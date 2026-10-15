@@ -121,17 +121,17 @@ export function drawCanShape(ctx, w, h, look = {}) {
 
   // handle
   ctx.beginPath();
-  ctx.roundRect(-w * 0.32, -h, w * 0.5, h * 0.2, w * 0.06);
+  roundRect(ctx, -w * 0.32, -h, w * 0.5, h * 0.2, w * 0.06);
   ctx.stroke();
   // spout
   ctx.fillStyle = C.yellow;
   ctx.beginPath();
-  ctx.roundRect(w * 0.22, -h * 0.97, w * 0.18, h * 0.14, w * 0.03);
+  roundRect(ctx, w * 0.22, -h * 0.97, w * 0.18, h * 0.14, w * 0.03);
   ctx.fill();
   ctx.stroke();
   // body
   ctx.beginPath();
-  ctx.roundRect(-w / 2, bodyTop, w, h * 0.85, w * 0.12);
+  roundRect(ctx, -w / 2, bodyTop, w, h * 0.85, w * 0.12);
   ctx.fill();
   if (look.dirty) {
     ctx.save();
@@ -152,6 +152,12 @@ export function drawCanShape(ctx, w, h, look = {}) {
   ctx.lineTo(-w * 0.32, -h * 0.1);
   ctx.stroke();
   ctx.restore();
+}
+
+// Rounded corners where supported; square corners on older browsers (Safari < 16, Firefox < 112).
+function roundRect(ctx, x, y, w, h, r) {
+  if (typeof ctx.roundRect === 'function') ctx.roundRect(x, y, w, h, r);
+  else ctx.rect(x, y, w, h);
 }
 
 function circle(ctx, x, y, r) {

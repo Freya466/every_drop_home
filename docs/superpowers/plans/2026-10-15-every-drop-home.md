@@ -4110,4 +4110,4 @@ Every difference between this plan and the code that gets built. Newest last.
 
 | Date | Task | What changed | Why | Approved by Freya? |
 |---|---|---|---|---|
-| — | — | No deviations yet. | — | — |
+| 2026-10-15 | Final review | `js/render/renderer.js`: the can's rounded rectangles go through a `roundRect(ctx, …)` helper that falls back to `ctx.rect` when `ctx.roundRect` is missing. New test `tests/renderer.test.js` ("the can draws on browsers without ctx.roundRect"); suite is now 101 tests. | On Safari < 16 / Firefox < 112 `ctx.roundRect` does not exist, so building the start screen threw and the game never started. Not game logic (drawing only). | Not needed (non-logic fix, per Working Agreement 1); reported to Freya |
