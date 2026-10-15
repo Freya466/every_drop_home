@@ -66,6 +66,20 @@ h2 { font-size: clamp(1.4rem, 5vw, 2rem); }
 .toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 0.95rem; cursor: pointer; }
 .toggle input { width: 20px; height: 20px; accent-color: var(--navy); }
 
+/* Gauge effects. Each has a static highlight, so reduced motion still shows what happened. */
+.gauge.fx-splash { box-shadow: 0 0 0 3px var(--dusty-blue); animation: gauge-shake 0.4s; }
+.gauge.fx-sparkle { box-shadow: 0 0 0 3px var(--yellow); animation: gauge-glow 0.6s; }
+.gauge.fx-ripple { box-shadow: 0 0 0 3px var(--dusty-blue); }
+.gauge.fx-ripple .gauge-fill { animation: gauge-ripple 0.6s; }
+.gauge.fx-dirty { box-shadow: 0 0 0 3px var(--mud); }
+@keyframes gauge-shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@keyframes gauge-glow { 50% { box-shadow: 0 0 0 7px var(--yellow); } }
+@keyframes gauge-ripple { 50% { filter: brightness(1.5); } }
+
+body.reduced-motion .gauge,
+body.reduced-motion .gauge *,
+body.reduced-motion .popup { animation: none !important; transition: none !important; }
+
 /* Short landscape phones: tighter cards */
 @media (max-height: 480px) {
   .card { width: min(100%, 560px); }

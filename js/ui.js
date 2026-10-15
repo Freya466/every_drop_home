@@ -3,6 +3,9 @@ import { drawCanShape } from './render/renderer.js';
 
 const $ = (id) => document.getElementById(id);
 
+// Gauge animation class for each game event.
+const GAUGE_FX = { splash: 'fx-splash', refill: 'fx-sparkle', clean: 'fx-ripple', dirty: 'fx-dirty' };
+
 // DOM screens and HUD. Reads state; never changes it. Buttons call the handlers.
 export function createUI({ settings, onStart, onPause, onResume, onPlayAgain, onSettingsChange }) {
   const el = {
@@ -47,14 +50,22 @@ export function createUI({ settings, onStart, onPause, onResume, onPlayAgain, on
   sound.addEventListener('change', () => change({ muted: !sound.checked }));
 
   const shown = {}; // last value written per field, to skip unchanged DOM writes
+  const fxTimers = {};
   function set(key, value, apply) {
     if (shown[key] === value) return;
     shown[key] = value;
     apply(value);
   }
+  function pulse(cls) {
+    el.gauge.classList.remove(cls);
+    void el.gauge.offsetWidth; // restart the animation
+    el.gauge.classList.add(cls);
+    clearTimeout(fxTimers[cls]);
+    fxTimers[cls] = setTimeout(() => el.gauge.classList.remove(cls), CONFIG.fx.gaugeFxS * 1000);
+  }
 
   return {
-    update(state) {
+    update(state, events = []) {
       set('phase', state.phase, (phase) => {
         el.hud.hidden = phase === 'start';
         for (const [name, screen] of Object.entries(el.screens)) screen.hidden = name !== phase;
@@ -74,6 +85,7 @@ export function createUI({ settings, onStart, onPause, onResume, onPlayAgain, on
       set('best', state.highScore, (best) => {
         $('start-best').textContent = best;
       });
+      for (const e of events) if (GAUGE_FX[e.type]) pulse(GAUGE_FX[e.type]);
     },
   };
 }
