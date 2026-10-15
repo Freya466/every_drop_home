@@ -1,0 +1,8 @@
+{
+  "name": "every-drop-home",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test"
+  }
+}
