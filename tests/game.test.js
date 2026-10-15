@@ -118,3 +118,18 @@ test('walking into a village delivers water', () => {
   assert.equal(game.state.cleanDeliveries, 1);
   assert.ok(game.state.popup);
 });
+
+// --- full spawner (Task 11) ---
+
+test('seeded full world: never jumping, the run ends within four segments', () => {
+  const game = createGame({ seed: 5 });
+  startRun(game);
+  let hitInFirstSegment = false;
+  for (let i = 0; i < 60 * 300 && game.state.phase === 'playing'; i++) {
+    const events = stepGame(game, idle, 1 / 60);
+    if (game.player.x < 60 && events.some((e) => e.type === 'splash')) hitInFirstSegment = true;
+  }
+  assert.equal(game.state.phase, 'ended');
+  assert.ok(game.state.distance < 240, `ended at ${game.state.distance}`);
+  assert.ok(hitInFirstSegment);
+});
