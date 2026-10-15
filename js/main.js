@@ -16,7 +16,7 @@ function frame(now) {
   const rawDt = (now - last) / 1000;
   last = now;
   stepGame(game, input, rawDt);
-  renderer.draw(game.state, game.player, []);
+  renderer.draw(game.state, game.player, game.world.entities);
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);

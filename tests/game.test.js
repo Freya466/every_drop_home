@@ -77,3 +77,21 @@ test('pauseIfPlaying pauses a running game and nothing else', () => {
   pauseIfPlaying(game);
   assert.equal(game.state.phase, 'paused');
 });
+
+// --- world (Task 6) ---
+
+test('play again resets the run but keeps the high score', () => {
+  const game = createGame({ seed: 1 });
+  startRun(game);
+  handWorld(game, [makeEntity('rock', 2)]);
+  for (let i = 0; i < 60 * 5; i++) stepGame(game, idle, 1 / 60);
+  Object.assign(game.state, { phase: 'ended', highScore: 77, dirty: true });
+  resetRun(game, 2);
+  assert.equal(game.state.phase, 'start');
+  assert.equal(game.state.highScore, 77);
+  assert.equal(game.state.water, CONFIG.water.startLevels);
+  assert.equal(game.state.dirty, false);
+  assert.equal(game.state.popup, null);
+  assert.equal(game.player.x, 0);
+  assert.equal(game.world.entities.length, 0);
+});
