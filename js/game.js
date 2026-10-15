@@ -2,6 +2,7 @@ import { CONFIG } from './config.js';
 import { createState, resetState } from './state.js';
 import { createPlayer, updatePlayer } from './player.js';
 import { createWorld, updateWorld, collideWorld } from './world/world.js';
+import { updateRules } from './rules.js';
 import { createRng } from './rng.js';
 
 // Everything one run needs, with no DOM, so it can be tested in Node.
@@ -33,7 +34,7 @@ export function clampDt(rawDt) {
   return Math.min(Math.max(rawDt, 0), CONFIG.maxDt);
 }
 
-// Game loop steps 1–3 (rules come in Task 7). Returns this frame's events.
+// Game loop steps 1–4. Returns this frame's events (empty unless playing).
 export function stepGame(game, input, rawDt) {
   const { state, player } = game;
   state.events = [];
@@ -44,6 +45,7 @@ export function stepGame(game, input, rawDt) {
   if (player.jumped) state.events.push({ type: 'jump' });
   if (player.landed) state.events.push({ type: 'land' });
   updateWorld(game.world, player.x);
-  collideWorld(game.world, player); // hits are detected; rules.js decides what they mean in Task 7
+  const hits = collideWorld(game.world, player);
+  updateRules(hits, state, player, dt);
   return state.events;
 }

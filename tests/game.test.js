@@ -95,3 +95,14 @@ test('play again resets the run but keeps the high score', () => {
   assert.equal(game.player.x, 0);
   assert.equal(game.world.entities.length, 0);
 });
+
+// --- rules wired in (Task 7) ---
+
+test('walking into rocks costs water and eventually spills', () => {
+  const game = createGame({ seed: 1 });
+  startRun(game);
+  handWorld(game, [2, 4, 6, 8, 10].map((x) => makeEntity('rock', x)));
+  for (let i = 0; i < 60 * 12 && game.state.phase === 'playing'; i++) stepGame(game, idle, 1 / 60);
+  assert.equal(game.state.phase, 'ended');
+  assert.equal(game.state.ending, 'spilled');
+});
