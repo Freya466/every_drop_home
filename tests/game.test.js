@@ -106,3 +106,15 @@ test('walking into rocks costs water and eventually spills', () => {
   assert.equal(game.state.phase, 'ended');
   assert.equal(game.state.ending, 'spilled');
 });
+
+// --- villages (Task 9) ---
+
+test('walking into a village delivers water', () => {
+  const game = createGame({ seed: 1 });
+  startRun(game);
+  handWorld(game, [makeEntity('village', 3)]);
+  for (let i = 0; i < 60 * 3; i++) stepGame(game, idle, 1 / 60);
+  assert.equal(game.state.water, 4);
+  assert.equal(game.state.cleanDeliveries, 1);
+  assert.ok(game.state.popup);
+});

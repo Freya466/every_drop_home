@@ -28,3 +28,12 @@ test('collideWorld reports what the can touches', () => {
   player.x = rock.x;
   assert.deepEqual(collideWorld(world, player).map((h) => h.type), ['rock']);
 });
+
+// --- villages (Task 9) ---
+
+test('each segment ends with a village', () => {
+  const world = createWorld(createRng(1));
+  updateWorld(world, 100);
+  const villages = world.entities.filter((e) => e.type === 'village').map((e) => e.x);
+  assert.deepEqual(villages, [120]);
+});

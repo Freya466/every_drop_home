@@ -11,7 +11,7 @@ export function createSpawner(rng) {
       const start = (n - 1) * W.segmentM;
       const limit = n * W.segmentM - W.villageSafeM;
       const half = CONFIG.entities.rock.w / 2;
-      const out = [];
+      const out = [makeEntity('village', n * W.segmentM)];
       let cursor = start + (n === 1 ? W.startEmptyM : W.villageSafeM);
       for (;;) {
         const x = cursor + randRange(rng, CONFIG.segments.gaps[0]);
