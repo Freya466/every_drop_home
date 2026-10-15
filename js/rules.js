@@ -29,6 +29,9 @@ export function updateRules(hits, state, player, dt) {
   for (const hit of hits) {
     if (state.phase !== 'playing') break;
     if (OBSTACLES.has(hit.type)) onObstacle(state, player);
+    else if (hit.type === 'refill') onRefill(state);
+    else if (hit.type === 'puddle') onPuddle(state);
+    else if (hit.type === 'filter') onFilter(state);
     else if (hit.type === 'village') onVillage(state);
   }
   state.score = computeScore(state);
@@ -40,6 +43,24 @@ function onObstacle(state, player) {
   makeInvincible(player);
   state.events.push({ type: 'splash' });
   if (state.water <= 0) endRun(state, 'spilled');
+}
+
+function onRefill(state) {
+  const W = CONFIG.water;
+  state.water = Math.min(W.maxLevels, state.water + W.refillGain);
+  state.events.push({ type: 'refill' });
+}
+
+function onPuddle(state) {
+  if (state.dirty) return;
+  state.dirty = true;
+  state.events.push({ type: 'dirty' });
+}
+
+function onFilter(state) {
+  if (!state.dirty) return;
+  state.dirty = false;
+  state.events.push({ type: 'clean' });
 }
 
 function onVillage(state) {

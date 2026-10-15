@@ -140,3 +140,39 @@ test('hits after the run ends in the same frame are ignored', () => {
   assert.equal(state.ending, 'spilled');
   assert.equal(state.cleanDeliveries, 0);
 });
+
+// --- refills, puddles, filters (Task 10) ---
+
+test('a refill adds half a level', () => {
+  const { state, player } = setup({ water: 3 });
+  updateRules([hit('refill')], state, player, 1 / 60);
+  assert.equal(state.water, 3.5);
+  assert.deepEqual(types(state), ['refill']);
+});
+
+test('a refill never goes above 5 levels', () => {
+  const { state, player } = setup({ water: 4.5 });
+  updateRules([hit('refill'), hit('refill')], state, player, 1 / 60);
+  assert.equal(state.water, 5);
+});
+
+test('landing in a puddle makes water dirty but keeps the amount', () => {
+  const { state, player } = setup({ water: 3 });
+  updateRules([hit('puddle')], state, player, 1 / 60);
+  assert.equal(state.dirty, true);
+  assert.equal(state.water, 3);
+  assert.deepEqual(types(state), ['dirty']);
+  state.events = [];
+  updateRules([hit('puddle')], state, player, 1 / 60);
+  assert.deepEqual(types(state), []);
+});
+
+test('a filter cleans dirty water; on clean water it does nothing', () => {
+  const { state, player } = setup({ dirty: true });
+  updateRules([hit('filter')], state, player, 1 / 60);
+  assert.equal(state.dirty, false);
+  assert.deepEqual(types(state), ['clean']);
+  state.events = [];
+  updateRules([hit('filter')], state, player, 1 / 60);
+  assert.deepEqual(types(state), []);
+});
