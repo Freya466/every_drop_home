@@ -4,7 +4,7 @@ import { drawCanShape } from './render/renderer.js';
 const $ = (id) => document.getElementById(id);
 
 // DOM screens and HUD. Reads state; never changes it. Buttons call the handlers.
-export function createUI({ onStart, onPause, onResume, onPlayAgain }) {
+export function createUI({ settings, onStart, onPause, onResume, onPlayAgain, onSettingsChange }) {
   const el = {
     hud: $('hud'),
     gauge: $('gauge'),
@@ -33,6 +33,18 @@ export function createUI({ onStart, onPause, onResume, onPlayAgain }) {
   onClick('pause-btn', onPause);
   onClick('resume-btn', onResume);
   onClick('again-btn', onPlayAgain);
+
+  let current = { ...settings };
+  const change = (patch) => {
+    current = { ...current, ...patch };
+    onSettingsChange(current);
+  };
+  const reduced = $('opt-reduced-motion');
+  reduced.checked = current.reducedMotion;
+  reduced.addEventListener('change', () => change({ reducedMotion: reduced.checked }));
+  const sound = $('opt-sound');
+  sound.checked = !current.muted;
+  sound.addEventListener('change', () => change({ muted: !sound.checked }));
 
   const shown = {}; // last value written per field, to skip unchanged DOM writes
   function set(key, value, apply) {
