@@ -1,5 +1,4 @@
 import { CONFIG, COPY } from './config.js';
-import { drawCanShape } from './render/renderer.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -26,7 +25,6 @@ export function createUI({ settings, onStart, onPause, onResume, onPlayAgain, on
   $('end-fact').textContent = COPY.endFact;
   $('donate-note').textContent = COPY.donateNote;
   $('donate-btn').href = CONFIG.donateUrl;
-  drawHeroCan($('start-can'));
 
   // blur() so a later Space press goes to the game, not the button.
   const onClick = (id, handler) =>
@@ -124,11 +122,4 @@ function fillEnd(state) {
   $('end-deliveries').textContent = `${state.cleanDeliveries} clean / ${state.dirtyDeliveries} dirty`;
   $('end-score').textContent = state.score;
   $('end-best').textContent = state.isNewHighScore ? `${state.highScore} (new best!)` : state.highScore;
-}
-
-function drawHeroCan(canvas) {
-  const ctx = canvas.getContext('2d');
-  const pad = canvas.height * 0.05;
-  ctx.translate(canvas.width / 2, canvas.height - pad);
-  drawCanShape(ctx, canvas.width * 0.7, canvas.height - pad * 2);
 }

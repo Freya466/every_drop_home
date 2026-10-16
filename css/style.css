@@ -53,7 +53,7 @@ h2 { font-size: clamp(1.4rem, 5vw, 2rem); }
 .tagline { margin: 0 0 8px; font-size: 1.1rem; font-weight: 700; }
 .body-text { margin: 8px 0; color: var(--text); }
 .best { margin: 8px 0 0; }
-#start-can { display: block; width: 96px; height: 120px; margin: 4px auto; }
+#start-can { display: block; width: auto; height: 112px; margin: 6px auto; filter: drop-shadow(1.5px 0 0 var(--navy)) drop-shadow(-1.5px 0 0 var(--navy)) drop-shadow(0 1.5px 0 var(--navy)) drop-shadow(0 -1.5px 0 var(--navy)); }
 .btn { display: block; width: 100%; max-width: 320px; margin: 12px auto 0; padding: 14px 20px; border: 3px solid transparent; border-radius: 999px; font: 900 1.15rem var(--font); text-decoration: none; cursor: pointer; }
 .btn-primary { background: var(--yellow); color: var(--text); }
 .btn-secondary { background: transparent; color: var(--navy); border-color: var(--navy); }
