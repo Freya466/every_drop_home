@@ -14,8 +14,8 @@
     <canvas id="game-canvas" aria-label="Every Drop Home"></canvas>
 
     <div id="hud" class="hud" hidden>
-      <div id="gauge" class="hud-panel gauge" role="img" aria-label="Water: 5 of 5 levels, clean">
-        <div class="gauge-cells">
+      <div id="gauge" class="hud-panel gauge" role="group" aria-label="Water: 5 of 5 levels, clean">
+        <div class="gauge-cells" aria-hidden="true">
           <span class="gauge-cell"><span class="gauge-fill"></span></span>
           <span class="gauge-cell"><span class="gauge-fill"></span></span>
           <span class="gauge-cell"><span class="gauge-fill"></span></span>
@@ -23,6 +23,10 @@
           <span class="gauge-cell"><span class="gauge-fill"></span></span>
         </div>
         <span id="hud-villages" class="hud-label">0 villages</span>
+        <div class="tally">
+          <span id="hud-delivered" class="tally-line">Delivered 0 L</span>
+          <span id="hud-spilled" class="tally-line">Spilled 0 L</span>
+        </div>
       </div>
       <div class="hud-right">
         <div class="hud-panel hud-distance"><span id="hud-distance">0</span><small> m</small></div>
@@ -49,8 +53,8 @@
         <p class="best">Best score: <strong id="start-best">0</strong></p>
         <button id="start-btn" class="btn btn-primary" type="button">Start walking</button>
         <div class="options">
-          <label class="toggle"><input id="opt-reduced-motion" type="checkbox"> Reduced motion</label>
-          <label class="toggle"><input id="opt-sound" type="checkbox" checked> Sound</label>
+          <label class="toggle"><input id="opt-reduced-motion" type="checkbox" data-setting="reducedMotion"> Reduced motion</label>
+          <label class="toggle"><input id="opt-sound" type="checkbox" data-setting="sound" checked> Sound</label>
         </div>
       </div>
     </section>
@@ -70,14 +74,19 @@
         <dl class="stats">
           <div><dt>Distance</dt><dd id="end-distance"></dd></div>
           <div><dt>Liters delivered</dt><dd id="end-liters"></dd></div>
+          <div><dt>Liters spilled</dt><dd id="end-spilled"></dd></div>
           <div><dt>Deliveries</dt><dd id="end-deliveries"></dd></div>
           <div><dt>Score</dt><dd id="end-score"></dd></div>
-          <div class="wide"><dt>Best</dt><dd id="end-best"></dd></div>
+          <div><dt>Best</dt><dd id="end-best"></dd></div>
         </dl>
         <p id="end-fact" class="body-text fact"></p>
         <a id="donate-btn" class="btn btn-primary" target="_blank" rel="noopener">Donate</a>
         <p id="donate-note" class="donate-note"></p>
         <button id="again-btn" class="btn btn-secondary" type="button">Play again</button>
+        <div class="options">
+          <label class="toggle"><input type="checkbox" data-setting="reducedMotion"> Reduced motion</label>
+          <label class="toggle"><input type="checkbox" data-setting="sound" checked> Sound</label>
+        </div>
       </div>
     </section>
   </main>

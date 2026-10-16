@@ -20,8 +20,11 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--cream)
 /* HUD */
 .hud { position: absolute; inset: 0 0 auto 0; display: flex; justify-content: space-between; align-items: flex-start; padding: max(12px, env(safe-area-inset-top)) var(--gutter) 0; pointer-events: none; }
 .hud-panel { background: var(--navy); color: var(--cream); border-radius: 12px; padding: 8px 12px; font-weight: 700; }
-.gauge { display: flex; flex-direction: column; gap: 6px; }
-.gauge-cells { display: flex; gap: 4px; }
+.gauge { display: grid; grid-template-columns: auto auto; grid-template-areas: "cells tally" "villages tally"; gap: 6px 12px; align-items: center; }
+.gauge-cells { grid-area: cells; display: flex; gap: 4px; }
+.gauge .hud-label { grid-area: villages; }
+.tally { grid-area: tally; display: flex; flex-direction: column; gap: 2px; padding-left: 12px; border-left: 2px solid rgba(255, 247, 225, 0.3); font-size: 0.85rem; white-space: nowrap; }
+.tally-line.ahead { color: var(--yellow); }
 .gauge-cell { position: relative; width: 22px; height: 30px; border: 2px solid var(--cream); border-radius: 5px; overflow: hidden; }
 .gauge-fill { position: absolute; inset: auto 0 0 0; height: calc(var(--fill, 1) * 100%); background: var(--dusty-blue); transition: height 0.2s, background-color 0.3s; }
 .gauge.dirty .gauge-fill { background: var(--mud); }
@@ -79,6 +82,12 @@ h2 { font-size: clamp(1.4rem, 5vw, 2rem); }
 body.reduced-motion .gauge,
 body.reduced-motion .gauge *,
 body.reduced-motion .popup { animation: none !important; transition: none !important; }
+
+/* Narrow phones: tally moves under the water cells so the HUD fits */
+@media (max-width: 480px) {
+  .gauge { grid-template-columns: auto; grid-template-areas: "cells" "villages" "tally"; }
+  .tally { flex-direction: row; gap: 10px; padding-left: 0; border-left: 0; font-size: 0.75rem; }
+}
 
 /* Short landscape phones: tighter cards */
 @media (max-height: 480px) {

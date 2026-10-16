@@ -139,8 +139,9 @@ export const COPY = {
   tagline: 'Every drop you carry counts.',
   premise: 'You are the jerry can. Carry clean water home to every village.',
   howTo: 'Tap or press Space to hop. Hold for a high jump. Stay low under branches.',
-  happyTitle: 'You delivered all 20 liters!',
+  happyTitle: (liters) => `You delivered ${liters} liters!`,
   happyBody: 'Every drop made it home.',
+  outdeliveredBody: 'More water made it home than spilled on the way.',
   spilledTitle: 'The can ran dry before the next village.',
   spilledBody: 'You made it further than you think. One more walk?',
   // PLACEHOLDER: replace with impact lines sourced from charitywater.org before launch.

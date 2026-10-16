@@ -10,10 +10,11 @@ export function createState(highScore = 0) {
     cleanDeliveries: 0,
     dirtyDeliveries: 0,
     litersDelivered: 0,
+    litersSpilled: 0,
     score: 0,
     highScore,
     isNewHighScore: false,
-    ending: null, // 'happy' | 'spilled'
+    ending: null, // 'happy' (emptied at a village) | 'outdelivered' (ran dry, but delivered > spilled) | 'spilled'
     popup: null, // { liters, points, clean, line, timeLeft }
     events: [], // this frame's events for effects, UI and sound: { type, ... }
   };

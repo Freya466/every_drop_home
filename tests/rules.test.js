@@ -176,3 +176,40 @@ test('a filter cleans dirty water; on clean water it does nothing', () => {
   updateRules([hit('filter')], state, player, 1 / 60);
   assert.deepEqual(types(state), []);
 });
+
+// --- second happy ending: delivered more than spilled (Freya, 2026-10-15) ---
+
+test('a hit records the liters spilled', () => {
+  const { state, player } = setup();
+  updateRules([hit('rock')], state, player, 1 / 60);
+  assert.equal(state.litersSpilled, 4);
+});
+
+test('a hit with half a level left spills 2 L, not 4', () => {
+  const { state, player } = setup({ water: 0.5 });
+  updateRules([hit('rock')], state, player, 1 / 60);
+  assert.equal(state.litersSpilled, 2);
+});
+
+test('running dry from a hit after delivering more than was spilled is a happy ending with ×1.5', () => {
+  const { state, player } = setup({ water: 1, litersDelivered: 12, litersSpilled: 4, cleanDeliveries: 3 });
+  player.x = 200;
+  updateRules([hit('rock')], state, player, 1 / 60);
+  assert.equal(state.litersSpilled, 8);
+  assert.equal(state.phase, 'ended');
+  assert.equal(state.ending, 'outdelivered');
+  assert.equal(state.score, Math.floor((20 + 30) * 1.5));
+});
+
+test('a tie between delivered and spilled is the spilled ending', () => {
+  const { state, player } = setup({ water: 1, litersDelivered: 8, litersSpilled: 4, cleanDeliveries: 2 });
+  updateRules([hit('rock')], state, player, 1 / 60);
+  assert.equal(state.litersSpilled, 8);
+  assert.equal(state.ending, 'spilled');
+});
+
+test('emptying the can at a village is still the happy ending', () => {
+  const { state, player } = setup({ water: 1, litersSpilled: 16 });
+  updateRules([hit('village')], state, player, 1 / 60);
+  assert.equal(state.ending, 'happy');
+});

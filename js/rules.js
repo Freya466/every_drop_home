@@ -1,7 +1,9 @@
 import { CONFIG, COPY } from './config.js';
 import { isInvincible, makeInvincible } from './player.js';
+import { OBSTACLE_TYPES } from './world/entities.js';
 
-const OBSTACLES = new Set(['rock', 'bush', 'branch']);
+const OBSTACLES = new Set(OBSTACLE_TYPES);
+const HAPPY_ENDINGS = new Set(['happy', 'outdelivered']);
 
 export function segmentAt(distance) {
   return Math.floor(distance / CONFIG.world.segmentM) + 1;
@@ -13,7 +15,7 @@ export function computeScore(state) {
     Math.floor(state.distance / S.metersPerPoint) +
     S.cleanDelivery * state.cleanDeliveries +
     S.dirtyDelivery * state.dirtyDeliveries;
-  const multiplier = state.ending === 'happy' ? S.happyMultiplier : 1;
+  const multiplier = HAPPY_ENDINGS.has(state.ending) ? S.happyMultiplier : 1;
   return Math.floor(base * multiplier);
 }
 
@@ -39,10 +41,14 @@ export function updateRules(hits, state, player, dt) {
 
 function onObstacle(state, player) {
   if (isInvincible(player)) return;
-  state.water = Math.max(0, state.water - CONFIG.water.hitCost);
+  const W = CONFIG.water;
+  const levels = Math.min(W.hitCost, state.water);
+  state.water -= levels;
+  state.litersSpilled += levels * W.litersPerLevel;
   makeInvincible(player);
   state.events.push({ type: 'splash' });
-  if (state.water <= 0) endRun(state, 'spilled');
+  // Running dry from a hit is still a happy ending if more water reached villages than was spilled.
+  if (state.water <= 0) endRun(state, state.litersDelivered > state.litersSpilled ? 'outdelivered' : 'spilled');
 }
 
 function onRefill(state) {

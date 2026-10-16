@@ -14,6 +14,8 @@ export function createUI({ settings, onStart, onPause, onResume, onPlayAgain, on
     fills: [...document.querySelectorAll('.gauge-fill')],
     distance: $('hud-distance'),
     villages: $('hud-villages'),
+    delivered: $('hud-delivered'),
+    spilled: $('hud-spilled'),
     popup: $('popup'),
     screens: { start: $('screen-start'), paused: $('screen-pause'), ended: $('screen-end') },
   };
@@ -37,17 +39,20 @@ export function createUI({ settings, onStart, onPause, onResume, onPlayAgain, on
   onClick('resume-btn', onResume);
   onClick('again-btn', onPlayAgain);
 
+  // Settings toggles appear on more than one screen; all copies stay in sync.
   let current = { ...settings };
-  const change = (patch) => {
-    current = { ...current, ...patch };
-    onSettingsChange(current);
+  const toggles = [...document.querySelectorAll('[data-setting]')];
+  const showSettings = () => {
+    for (const t of toggles) t.checked = t.dataset.setting === 'sound' ? !current.muted : current.reducedMotion;
   };
-  const reduced = $('opt-reduced-motion');
-  reduced.checked = current.reducedMotion;
-  reduced.addEventListener('change', () => change({ reducedMotion: reduced.checked }));
-  const sound = $('opt-sound');
-  sound.checked = !current.muted;
-  sound.addEventListener('change', () => change({ muted: !sound.checked }));
+  for (const t of toggles) {
+    t.addEventListener('change', () => {
+      current = { ...current, ...(t.dataset.setting === 'sound' ? { muted: !t.checked } : { reducedMotion: t.checked }) };
+      showSettings();
+      onSettingsChange(current);
+    });
+  }
+  showSettings();
 
   const shown = {}; // last value written per field, to skip unchanged DOM writes
   const fxTimers = {};
@@ -78,6 +83,11 @@ export function createUI({ settings, onStart, onPause, onResume, onPlayAgain, on
       set('villages', state.cleanDeliveries + state.dirtyDeliveries, (n) => {
         el.villages.textContent = `${n} ${n === 1 ? 'village' : 'villages'}`;
       });
+      set('tally', `${state.litersDelivered}|${state.litersSpilled}`, () => {
+        el.delivered.textContent = `Delivered ${state.litersDelivered} L`;
+        el.spilled.textContent = `Spilled ${state.litersSpilled} L`;
+        el.delivered.classList.toggle('ahead', state.litersDelivered > state.litersSpilled);
+      });
       set('popup', state.popup ? state.cleanDeliveries + state.dirtyDeliveries : null, (n) => {
         el.popup.hidden = n === null;
         if (n !== null) fillPopup(state.popup);
@@ -105,11 +115,12 @@ function fillPopup(popup) {
 }
 
 function fillEnd(state) {
-  const happy = state.ending === 'happy';
-  $('end-title').textContent = happy ? COPY.happyTitle : COPY.spilledTitle;
-  $('end-body').textContent = happy ? COPY.happyBody : COPY.spilledBody;
+  const happy = state.ending !== 'spilled';
+  $('end-title').textContent = happy ? COPY.happyTitle(state.litersDelivered) : COPY.spilledTitle;
+  $('end-body').textContent = { happy: COPY.happyBody, outdelivered: COPY.outdeliveredBody, spilled: COPY.spilledBody }[state.ending];
   $('end-distance').textContent = `${Math.floor(state.distance)} m`;
   $('end-liters').textContent = `${state.litersDelivered} L`;
+  $('end-spilled').textContent = `${state.litersSpilled} L`;
   $('end-deliveries').textContent = `${state.cleanDeliveries} clean / ${state.dirtyDeliveries} dirty`;
   $('end-score').textContent = state.score;
   $('end-best').textContent = state.isNewHighScore ? `${state.highScore} (new best!)` : state.highScore;

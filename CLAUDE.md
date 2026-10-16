@@ -95,19 +95,21 @@ Spawner fairness rules:
 ### Scoring
 ```
 score = (floor(distance_m / 10) + 10 * cleanDeliveries + 5 * dirtyDeliveries) * multiplier
-multiplier = 1.5 if happy ending, else 1
+multiplier = 1.5 if either happy ending, else 1
 ```
 High score saved in `localStorage`.
 
 ### Endings
-- **Happy ending:** last water delivered at a village → "You delivered all 20 liters!", ×1.5 bonus.
-- **Spilled ending:** last water spilled from a hit → "The can ran dry before the next village." (gentle, encouraging, never guilt-driven).
+- **Happy ending (village):** last water delivered at a village → "You delivered [N] liters!" (N = liters delivered this run), ×1.5 bonus.
+- **Happy ending (out-delivered):** the can runs dry from a hit, but liters delivered > liters spilled → "You delivered [N] liters!" + "More water made it home than spilled on the way.", ×1.5 bonus. A tie counts as spilled.
+- **Spilled ending:** the can runs dry from a hit and liters delivered ≤ liters spilled → "The can ran dry before the next village." (gentle, encouraging, never guilt-driven).
+- Decided by Freya on 2026-10-15 (the original single happy ending was unreachable for players who caught every refill). See the plan's Deviations Log.
 
 ### Screens
 - **Start:** charity: water logo above title, yellow jerry can hero, how to jump, high score, yellow Start button.
-- **HUD:** water gauge top-left (5 levels, half steps, brown when dirty), distance top-right (whole meters), villages delivered, pause button.
+- **HUD:** water gauge top-left (5 levels, half steps, brown when dirty) with a delivered-vs-spilled tally beside it ("Delivered N L" turns yellow while ahead of "Spilled N L"), distance top-right (whole meters), villages delivered, pause button.
 - **Delivery pop-up:** "4 liters delivered!" + points + impact line (statistics must come from charitywater.org; use placeholder text until sourced).
-- **End:** ending message, distance, liters delivered, clean vs dirty deliveries, score + high score, one sourced fact, **Donate** (primary, yellow, links to https://www.charitywater.org/) and **Play again** (secondary).
+- **End:** ending message, distance, liters delivered, liters spilled, clean vs dirty deliveries, score + high score, one sourced fact, **Donate** (primary, yellow, links to https://www.charitywater.org/) and **Play again** (secondary). Reduced-motion and sound toggles appear on both the start and end screens.
 - **Play again** resets immediately: distance 0, water 5 clean, score/deliveries 0, entities cleared, back to segment 1. High score persists.
 
 ---
