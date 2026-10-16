@@ -22,6 +22,7 @@ export function createUI({ settings, onStart, onPause, onResume, onPlayAgain, on
   $('start-tagline').textContent = COPY.tagline;
   $('start-premise').textContent = COPY.premise;
   $('start-howto').textContent = COPY.howTo;
+  $('end-fact-title').textContent = COPY.endFactTitle;
   $('end-fact').textContent = COPY.endFact;
   $('donate-note').textContent = COPY.donateNote;
   $('donate-btn').href = CONFIG.donateUrl;

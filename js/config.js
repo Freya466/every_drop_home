@@ -146,7 +146,8 @@ export const COPY = {
   spilledBody: 'You made it further than you think. One more walk?',
   // PLACEHOLDER: replace with impact lines sourced from charitywater.org before launch.
   impactLines: ['A family can cook and drink today.', 'Water for a whole household today.', 'One more home reached.'],
-  // PLACEHOLDER: replace with one fact sourced from charitywater.org before launch.
-  endFact: 'Placeholder: add one sourced charity: water fact about real water collection here.',
+  // End-screen fact, supplied by Freya (2026-10-15).
+  endFactTitle: 'why water?',
+  endFact: '696 million people in the world live without clean water.',
   donateNote: '100% of public donations go directly to water projects.',
 };

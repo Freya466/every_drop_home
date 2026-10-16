@@ -43,8 +43,7 @@
 
     <section id="screen-start" class="screen" data-no-jump>
       <div class="card">
-        <!-- Swap for the official charity: water logo (assets/images/) once you have the file and permission. -->
-        <p class="logo">charity: water</p>
+        <img class="logo" src="assets/images/charitywater_logo_horizontal_BlackText_cropped.png" width="672" height="86" alt="charity: water">
         <h1>Every Drop Home</h1>
         <p id="start-tagline" class="tagline"></p>
         <p id="start-premise" class="body-text"></p>
@@ -68,7 +67,7 @@
 
     <section id="screen-end" class="screen" data-no-jump hidden>
       <div class="card">
-        <p class="logo">charity: water</p>
+        <img class="logo" src="assets/images/charitywater_logo_horizontal_BlackText_cropped.png" width="672" height="86" alt="charity: water">
         <h2 id="end-title"></h2>
         <p id="end-body" class="body-text"></p>
         <dl class="stats">
@@ -79,7 +78,10 @@
           <div><dt>Score</dt><dd id="end-score"></dd></div>
           <div><dt>Best</dt><dd id="end-best"></dd></div>
         </dl>
-        <p id="end-fact" class="body-text fact"></p>
+        <div class="fact">
+          <p id="end-fact-title" class="fact-title"></p>
+          <p id="end-fact" class="body-text"></p>
+        </div>
         <a id="donate-btn" class="btn btn-primary" target="_blank" rel="noopener">Donate</a>
         <p id="donate-note" class="donate-note"></p>
         <button id="again-btn" class="btn btn-secondary" type="button">Play again</button>

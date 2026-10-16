@@ -40,6 +40,8 @@ test('key copy matches the spec', () => {
   assert.equal(COPY.happyTitle(24), 'You delivered 24 liters!');
   assert.equal(COPY.outdeliveredBody, 'More water made it home than spilled on the way.');
   assert.equal(COPY.spilledTitle, 'The can ran dry before the next village.');
+  assert.equal(COPY.endFactTitle, 'why water?');
+  assert.equal(COPY.endFact, '696 million people in the world live without clean water.');
   assert.equal(COPY.donateNote, '100% of public donations go directly to water projects.');
   assert.equal(CONFIG.donateUrl, 'https://www.charitywater.org/');
 });

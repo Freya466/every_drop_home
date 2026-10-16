@@ -46,7 +46,7 @@ html, body { margin: 0; height: 100%; overflow: hidden; background: var(--cream)
 /* Screens */
 .screen { position: absolute; inset: 0; display: grid; place-items: center; padding: 16px; overflow-y: auto; background: rgba(255, 247, 225, 0.94); }
 .card { width: min(100%, 440px); text-align: center; color: var(--navy); }
-.logo { margin: 0 0 4px; font-weight: 900; letter-spacing: 0.02em; }
+.logo { display: block; width: 220px; max-width: 70%; height: auto; margin: 0 auto 10px; } /* cropped logo is 672 px wide: sharp at 2x */
 h1, h2 { margin: 0 0 8px; font-weight: 900; line-height: 1.1; color: var(--navy); }
 h1 { font-size: clamp(2rem, 8vw, 3rem); }
 h2 { font-size: clamp(1.4rem, 5vw, 2rem); }
@@ -63,7 +63,9 @@ h2 { font-size: clamp(1.4rem, 5vw, 2rem); }
 .stats .wide { grid-column: 1 / -1; }
 .stats dt { font-size: 0.8rem; }
 .stats dd { margin: 2px 0 0; font-size: 1.2rem; font-weight: 900; }
-.fact { font-style: italic; }
+.fact { margin: 10px 0; }
+.fact p { margin: 2px 0; }
+.fact-title { font-weight: 900; color: var(--navy); }
 .donate-note { margin: 6px 0 0; font-size: 0.9rem; color: var(--text); }
 .options { display: flex; justify-content: center; gap: 16px; margin-top: 14px; }
 .toggle { display: inline-flex; align-items: center; gap: 6px; font-size: 0.95rem; cursor: pointer; }
